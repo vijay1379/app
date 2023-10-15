@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #2c3e50, #3498db);
+      font-family: Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    #countdown {
+      font-size: 36px;
+      margin: 20px;
+    }
+
+    #datetimePicker {
+      background-color: transparent;
+      color: #fff;
+      border: none;
+      border-bottom: 2px solid #fff;
+      font-size: 20px;
+      margin: 20px;
+      text-align: center;
+    }
+
+    #startButton {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Countdown Timer</h1>
+  <input type="text" id="datetimePicker" placeholder="Select date and time">
+  <button id="startButton" onclick="startCountdown()">Start Countdown</button>
+  <p id="countdown"></p>
+</div>
+
+<script>
+  flatpickr("#datetimePicker", {
+    enableTime: true,
+    dateFormat: "Y-m-d H:i",
+    defaultDate: "2023-01-01 00:00"
+  });
+
+  var x;
+
+  function startCountdown() {
+    var selectedDate = new Date(document.querySelector("#datetimePicker").value).getTime();
+
+    x = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = selectedDate - now;
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      var countdownElement = document.getElementById("countdown");
+      countdownElement.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+      if (distance < 0) {
+        clearInterval(x);
+        countdownElement.innerHTML = "EXPIRED";
+      }
+    }, 1000);
+  }
+</script>
+
+</body>
+</html>
